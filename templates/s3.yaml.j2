@@ -17,6 +17,11 @@ Resources:
 {% else %}
       BucketName: {{ Stack | lower }}-{{ Bucket.NameDns | lower }}-s3-{{ FriendlyRegion | lower }}-{{ Project | lower }}-{{ Environment | lower }}
 {% endif %}
+{% if Bucket.WebSite == true %}
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+{% endif %}
       Tags:
         - Key: Contractor
           Value: {{ Contractor }}
