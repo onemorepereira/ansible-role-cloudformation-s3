@@ -1,0 +1,19 @@
+---
+- name: Render the S3 template
+  template:
+    src: s3.yaml.j2
+    dest: "rendered_templates/{{ Stack }}S3{{ FriendlyRegion }}{{ Project }}{{ Environment }}.yaml"
+  changed_when: False
+
+- name: S3 Buckets Launcher
+  cloudformation:
+    stack_name: "{{ Stack }}S3{{ FriendlyRegion }}{{ Project }}{{ Environment }}"
+    state: "present"
+    region: "{{ Region }}"
+    template: "rendered_templates/{{ Stack }}S3{{ FriendlyRegion }}{{ Project }}{{ Environment }}.yaml"
+
+- name: Remove rendered S3 template
+  file:
+    dest: "rendered_templates/{{ Stack }}S3{{ FriendlyRegion }}{{ Project }}{{ Environment }}.yaml"
+    state: absent
+  changed_when: False

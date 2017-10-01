@@ -1,0 +1,46 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 Bucket Creator ({{ Stack }} {{ Region }})
+
+Resources:
+{% for Bucket in Buckets %}
+  {{ Stack }}{{ Bucket.Name }}S3{{ FriendlyRegion }}{{ Project }}{{ Environment }}:
+    Type: AWS::S3::Bucket
+    Properties:
+{% if Bucket.AccelerationStatus is defined %}
+      AccelerateConfiguration:
+        AccelerationStatus: {{ Bucket.AccelerationStatus }}
+{% endif %}
+      AccessControl: {{ Bucket.CannedAcl }}
+{% if Bucket.WebSite == true %}
+      BucketName: {{ Bucket.NameDns | lower }}
+{% else %}
+      BucketName: {{ Stack | lower }}-{{ Bucket.NameDns | lower }}-s3-{{ FriendlyRegion | lower }}-{{ Project | lower }}-{{ Environment | lower }}
+{% endif %}
+      Tags:
+        - Key: Contractor
+          Value: {{ Contractor }}
+        - Key: Environment
+          Value: {{ Environment }}
+        - Key: Function
+          Value: S3
+        - Key: Name
+{% if Bucket.WebSite == true %}
+          Value: {{ Bucket.NameDns | lower }}
+{% else %}
+          Value: {{ Stack | lower }}-{{ Bucket.NameDns | lower }}-{{ FriendlyRegion | lower }}-{{ Project | lower }}-{{ Environment | lower }}
+{% endif %}
+        - Key: Project
+          Value: {{ Project }}
+        - Key: Region
+          Value: {{ Region | lower }}
+        - Key: Stack
+          Value: {{ Stack }}
+
+{% endfor %}
+
+Outputs:
+{% for Bucket in Buckets %}
+  {{ Stack }}{{ Bucket.Name }}S3{{ FriendlyRegion }}{{ Project }}{{ Environment }}:
+    Value: !Ref {{ Stack }}{{ Bucket.Name }}S3{{ FriendlyRegion }}{{ Project }}{{ Environment }}
+{% endfor %}
