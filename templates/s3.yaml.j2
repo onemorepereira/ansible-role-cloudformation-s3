@@ -17,6 +17,9 @@ Resources:
 {% else %}
       BucketName: {{ Stack | lower }}-{{ Bucket.NameDns | lower }}-s3-{{ FriendlyRegion | lower }}-{{ Project | lower }}-{{ Environment | lower }}
 {% endif %}
+{% if Bucket.AccessLogs = true %}
+      LoggingConfiguration:
+        LogFilePrefix: {{ Bucket.AccessLogs.LogFilePrefix }}
 {% if Bucket.WebSite == true %}
       WebsiteConfiguration:
         IndexDocument: index.html
