@@ -20,6 +20,7 @@ Resources:
 {% if Bucket.AccessLogs = true %}
       LoggingConfiguration:
         LogFilePrefix: {{ Bucket.LogFilePrefix }}
+{% enndif %}
 {% if Bucket.WebSite == true %}
       WebsiteConfiguration:
         IndexDocument: index.html
