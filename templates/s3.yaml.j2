@@ -19,6 +19,7 @@ Resources:
 {% endif %}
 {% if Bucket.AccessLogs == true %}
       LoggingConfiguration:
+        DestinationBucketName: {{ Bucket.LogFileDestinationBucket }}
         LogFilePrefix: {{ Bucket.LogFilePrefix }}
 {% endif %}
 {% if Bucket.WebSite == true %}
