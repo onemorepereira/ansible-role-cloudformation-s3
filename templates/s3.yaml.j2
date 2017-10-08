@@ -24,8 +24,15 @@ Resources:
 {% endif %}
 {% if Bucket.WebSite == true %}
       WebsiteConfiguration:
+{% if Bucket.RedirectAllRequestsHost is defined %}
+        RedirectAllRequestsTo:
+          HostName: {{ Bucket.RedirectAllRequestsHost }}
+          Protocol: {{ Bucket.RedirectAllRequestsProt }}
+{% endif %}
+{% if Bucket.RedirectAllRequestsHost is not defined %}
         IndexDocument: index.html
         ErrorDocument: 404.html
+{% endif %}
 {% endif %}
       Tags:
         - Key: Contractor
